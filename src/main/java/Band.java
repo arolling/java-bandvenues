@@ -106,4 +106,25 @@ public class Band {
     }
   }
 
+  //JOIN TABLE interaction
+  public void addVenue(Venue newVenue) {
+    //ADD CONDITIONAL CHECKING OF VENUE SIZE HERE
+    String sql = "INSERT INTO bands_venues (band_id, venue_id) VALUES (:band_id, :venue_id)";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("venue_id", newVenue.getId())
+        .addParameter("band_id", id)
+        .executeUpdate();
+    }
+  }
+
+  public List<Venue> allVenues() {
+    String sql = "SELECT venues.* FROM bands JOIN bands_venues ON (bands.id = bands_venues.band_id) JOIN venues ON (bands_venues.venue_id = venues.id) WHERE bands.id = :id ORDER BY venue_name";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetch(Venue.class);
+    }
+  }
+
 }
