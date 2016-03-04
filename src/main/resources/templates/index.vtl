@@ -16,6 +16,7 @@
       </div>
     </form>
 
+
     <hr />
 
     <h1>Add New Venue</h1>
@@ -38,6 +39,38 @@
         </div>
       </div>
     </form>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Add New Genre</h1>
+        <form class="form-horizontal" action="/addGenre" method="post">
+          <div class="form-group">
+            <label for="genreName" class="col-sm-3 control-label">Genre Name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="genreName" name="genreName" placeholder="Genre of Music">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <button type="submit" id="addGenre"class="btn btn-default">Add</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-4">
+        <h1>All Genres</h1>
+        <ul class="list-group">
+          #foreach($genre in $allGenres)
+            <li class="list-group-item">
+              <h4 class="list-group-item-heading">$genre.getName()</h4>
+              #foreach($band in $genre.allBands())
+                <p class="list-group-item-text">$band.getName()</p>
+              #end
+            </li>
+          #end
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="col-md-4">
     <h1>All Bands</h1>
@@ -46,7 +79,12 @@
         <a href="/bands/$band.getId()" class="list-group-item">$band.getName()</a>
       #end
     </div>
-
+    <div class="row">
+      <div class="col-sm-offset-2 col-sm-10">
+        <a href="/deleteall" type="button" class="btn btn-danger">Delete All Bands</a>
+      </div>
+    </div>
+    <hr>
     <h1>All Venues</h1>
     <div class="list-group">
       #foreach($venue in $allVenues)

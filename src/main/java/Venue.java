@@ -77,8 +77,13 @@ public class Venue{
 
   public void delete() {
     String sql = "DELETE FROM venues WHERE id=:id";
+    String venuesql = "DELETE FROM bands_venues WHERE venue_id=:id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+
+      con.createQuery(venuesql)
         .addParameter("id", id)
         .executeUpdate();
     }

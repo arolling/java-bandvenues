@@ -9,12 +9,14 @@
     <h3>Add Venues Played</h3>
     <form action="/bands/$band.getId()/addGigs" method="post">
       #foreach($venue in $allVenues)
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" name="checkVenue" value="$venue.getId()" id="venue$venue.getId()">
-            $venue.getName()
-          </label>
-        </div>
+        #if(!$band.allVenues().contains($venue))
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="checkVenue" value="$venue.getId()" id="venue$venue.getId()">
+              $venue.getName()
+            </label>
+          </div>
+        #end
       #end
       <button type="submit" id="addGigs" class="btn btn-default">Add All</button>
     </form>
@@ -22,12 +24,14 @@
     <h3>Add Genres</h3>
     <form action="/bands/$band.getId()/addCategories" method="post">
       #foreach($genre in $allGenres)
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" name="checkGenre" value="$genre.getId()" id="genre$genre.getId()">
-            $genre.getName()
-          </label>
-        </div>
+        #if(!$band.allGenres().contains($genre))
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="checkGenre" value="$genre.getId()" id="genre$genre.getId()">
+              $genre.getName()
+            </label>
+          </div>
+        #end
       #end
       <button type="submit" id="categorize" class="btn btn-default">Add All</button>
     </form>
@@ -51,7 +55,7 @@
       </div>
       <div class="form-group">
         <label for="editFans">Update Fanbase (currently $band.getFanbase())</label>
-        <input type="text" name="editFans" id="editFans" value="$band.getFanbase()" class="form-control">
+        <input type="number" name="editFans" id="editFans" value="$band.getFanbase()" class="form-control">
       </div>
       <button type="submit" id="edit" class="btn btn-default">Make Changes</button>
     </form>

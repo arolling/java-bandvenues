@@ -15,14 +15,17 @@ public class App {
 
       model.put("allBands", Band.all());
       model.put("allVenues", Venue.all());
+      model.put("allGenres", Genre.all());
       model.put("template", "templates/index.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
     post("/addBand", (request, response) -> {
       String newBandName = request.queryParams("bandName");
-      Band newBand = new Band(newBandName);
-      newBand.save();
+      if(newBandName.length() > 0) {
+        Band newBand = new Band(newBandName);
+        newBand.save();
+      }
       response.redirect("/");
       return null;
     });
@@ -30,8 +33,10 @@ public class App {
     post("/addVenue", (request, response) -> {
       String newVenueName = request.queryParams("venueName");
       int capacity = Integer.parseInt(request.queryParams("capacity"));
-      Venue newVenue = new Venue(newVenueName, capacity);
-      newVenue.save();
+      if(newVenueName.length() > 0) {
+        Venue newVenue = new Venue(newVenueName, capacity);
+        newVenue.save();
+      }
       response.redirect("/");
       return null;
     });
@@ -84,5 +89,43 @@ public class App {
       return null;
     });
 
+    get("/deleteall", (request, response) -> {
+      Band.deleteAll();
+      response.redirect("/");
+      return null;
+    });
+
+    get("/venues/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Venue thisVenue = Venue.find(Integer.parseInt(request.params("id")));
+      model.put("venue", thisVenue);
+      model.put("template", "templates/venue.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/venues/:id/edit", (request, response) -> {
+      Venue thisVenue = Venue.find(Integer.parseInt(request.params("id")));
+      String newName = request.queryParams("editName");
+      int newSize = Integer.parseInt(request.queryParams("editSize"));
+      thisVenue.updateCapacity(newSize);
+      thisVenue.updateName(newName);
+      response.redirect("/venues/" + thisVenue.getId());
+      return null;
+    });
+
+    get("/venues/:id/delete", (request, response) -> {
+      Venue thisVenue = Venue.find(Integer.parseInt(request.params("id")));
+      thisVenue.delete();
+      response.redirect("/");
+      return null;
+    });
+
+    post("/addGenre", (request, response) -> {
+      String newGenreName = request.queryParams("genreName");
+      Genre newGenre = new Genre(newGenreName);
+      newGenre.save();
+      response.redirect("/");
+      return null;
+    });
   }
 }
