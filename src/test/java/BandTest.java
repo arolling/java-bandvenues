@@ -60,4 +60,26 @@ public class BandTest {
     assertEquals(0, Band.all().size());
   }
 
+  @Test
+  public void updateFans_changesFanbaseSizeLocallyAndRemotely_true() {
+    Band neo = new Band("Neo");
+    neo.save();
+    Band old = new Band("The Beatles");
+    old.save();
+    old.updateFans(100000000);
+    Band savedOld = Band.find(old.getId());
+    assertEquals(old.getFanbase(), savedOld.getFanbase());
+  }
+
+  @Test
+  public void updateName_updatesBandNameLocallyAndRemotely_true() {
+    Band neo = new Band("Neo");
+    neo.save();
+    Band old = new Band("The Ladybugs");
+    old.save();
+    old.updateName("The Beatles");
+    Band savedOld = Band.find(old.getId());
+    assertTrue(old.equals(savedOld));
+  }
+
 }
