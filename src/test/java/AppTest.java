@@ -76,4 +76,16 @@ public class AppTest extends FluentTest {
     assertThat(pageSource()).contains("The Beatles");
     assertThat(pageSource()).contains("10000000");
   }
+
+  @Test
+  public void deleteBand() {
+    Band neo = new Band("Neo");
+    neo.save();
+    Band old = new Band("The Beatles");
+    old.save();
+    goTo("http://localhost:4567/bands/" + old.getId());
+    click("a", withText("Delete Band"));
+    assertThat(pageSource()).doesNotContain("The Beatles");
+    assertThat(pageSource()).contains("Neo");
+  }
 }

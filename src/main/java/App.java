@@ -77,5 +77,12 @@ public class App {
       return null;
     });
 
+    get("/bands/:id/delete", (request, response) -> {
+      Band thisBand = Band.find(Integer.parseInt(request.params("id")));
+      thisBand.delete();
+      response.redirect("/");
+      return null;
+    });
+
   }
 }
