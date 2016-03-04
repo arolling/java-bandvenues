@@ -47,6 +47,14 @@ public class Band {
     }
   }
 
+  public static void deleteAll() {
+    String sql = "DELETE FROM bands";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .executeUpdate();
+    }
+  }
+
   public void save() {
     String sql = "INSERT INTO bands (band_name, fanbase) VALUES (:band_name, :fanbase)";
     try(Connection con = DB.sql2o.open()) {
@@ -64,6 +72,15 @@ public class Band {
       return con.createQuery(sql)
         .addParameter("id", band_id)
         .executeAndFetchFirst(Band.class);
+    }
+  }
+
+  public void delete() {
+    String sql = "DELETE FROM bands WHERE id=:id";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
     }
   }
 

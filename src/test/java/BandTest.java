@@ -40,5 +40,24 @@ public class BandTest {
     assertEquals(neo, Band.find(neo.getId()));
   }
 
+  @Test
+  public void delete_deletesSpecificBand_false() {
+    Band neo = new Band("Neo");
+    neo.save();
+    Band old = new Band("The Beatles");
+    old.save();
+    neo.delete();
+    assertFalse(Band.all().contains(neo));
+  }
+
+  @Test
+  public void deleteAll_deletesAllBands_true() {
+    Band neo = new Band("Neo");
+    neo.save();
+    Band old = new Band("The Beatles");
+    old.save();
+    Band.deleteAll();
+    assertEquals(0, Band.all().size());
+  }
 
 }
