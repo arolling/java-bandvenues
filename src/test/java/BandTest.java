@@ -98,4 +98,24 @@ public class BandTest {
     assertFalse(old.allVenues().contains(carnegie));
   }
 
+  @Test
+  public void addGenre_addsGenreToBand_true() {
+    Band neo = new Band("Neo");
+    neo.save();
+    Band old = new Band("The Beatles");
+    old.save();
+    old.updateFans(100000000);
+    Venue carnegie = new Venue("Carnegie Hall", 2804);
+    carnegie.save();
+    Venue msg = new Venue("Madison Square Gardens", 18200);
+    msg.save();
+    old.addVenue(msg);
+    old.addGenre(2);
+    old.addGenre(1);
+    old.addGenre(7);
+    assertTrue(old.allGenres().contains(Genre.find(1)));
+    assertFalse(old.allGenres().contains(Genre.find(9)));
+  }
+
+
 }

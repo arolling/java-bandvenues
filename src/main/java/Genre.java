@@ -67,4 +67,13 @@ public class Genre{
         .executeUpdate();
     }
   }
+
+  public List<Band> allBands() {
+    String sql = "SELECT bands.* FROM genres JOIN bands_genres ON (bands_genres.genre_id = genres.id) JOIN bands ON (bands.id = bands_genres.band_id) WHERE genres.id = :id ORDER BY band_name";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetch(Band.class);
+    }
+  }
 }

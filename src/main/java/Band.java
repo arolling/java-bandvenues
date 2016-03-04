@@ -127,4 +127,23 @@ public class Band {
     }
   }
 
+  public void addGenre(int genreId) {
+    String sql = "INSERT INTO bands_genres (band_id, genre_id) VALUES (:band_id, :genre_id)";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("genre_id", genreId)
+        .addParameter("band_id", id)
+        .executeUpdate();
+    }
+  }
+
+  public List<Genre> allGenres() {
+    String sql = "SELECT genres.* FROM bands JOIN bands_genres ON (bands.id = bands_genres.band_id) JOIN genres ON (bands_genres.genre_id = genres.id) WHERE bands.id = :id ORDER BY genre_name";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetch(Genre.class);
+    }
+  }
+
 }

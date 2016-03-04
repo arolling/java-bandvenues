@@ -53,5 +53,18 @@ public class GenreTest {
     assertTrue(folk.equals(savedGenre));
   }
 
-
+  @Test
+  public void allBands_retrievesListOfAllBandsInGenre_true() {
+    Band neo = new Band("Neo");
+    neo.save();
+    Band old = new Band("The Beatles");
+    old.save();
+    old.updateFans(100000000);
+    old.addGenre(2);
+    old.addGenre(1);
+    old.addGenre(7);
+    neo.addGenre(2);
+    assertTrue(Genre.find(1).allBands().contains(old));
+    assertEquals(2, Genre.find(2).allBands().size());
+  }
 }
