@@ -11,17 +11,17 @@ public class Venue{
     venue_size = capacity;
   }
 
-  // @Override
-  // public boolean equals(Object otherBand){
-  //   if (!(otherBand instanceof Band)) {
-  //     return false;
-  //   } else {
-  //     Band newBand = (Band) otherBand;
-  //     return this.getName().equals(newBand.getName()) &&
-  //            this.getId() == newBand.getId() &&
-  //            this.getFanbase() == newBand.getFanbase();
-  //   }
-  // }
+  @Override
+  public boolean equals(Object otherVenue){
+    if (!(otherVenue instanceof Venue)) {
+      return false;
+    } else {
+      Venue newVenue = (Venue) otherVenue;
+      return this.getName().equals(newVenue.getName()) &&
+             this.getId() == newVenue.getId() &&
+             this.getSize() == newVenue.getSize();
+    }
+  }
 
   //Getters
 
@@ -44,6 +44,65 @@ public class Venue{
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
         .executeAndFetch(Venue.class);
+    }
+  }
+
+  public static void deleteAll() {
+    String sql = "DELETE FROM venues";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .executeUpdate();
+    }
+  }
+
+  public void save() {
+    String sql = "INSERT INTO venues (venue_name, venue_size) VALUES (:venue_name, :venue_size)";
+    try(Connection con = DB.sql2o.open()) {
+      this.id = (int) con.createQuery(sql, true)
+        .addParameter("venue_name", venue_name)
+        .addParameter("venue_size", venue_size)
+        .executeUpdate()
+        .getKey();
+    }
+  }
+
+  public static Venue find(int venue_id) {
+    String sql = "SELECT * FROM venues WHERE id=:id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", venue_id)
+        .executeAndFetchFirst(Venue.class);
+    }
+  }
+
+  public void delete() {
+    String sql = "DELETE FROM venues WHERE id=:id";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void updateCapacity(int newCapacity) {
+    venue_size = newCapacity;
+    String sql = "UPDATE venues SET venue_size=:venue_size WHERE id=:id";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("venue_size", venue_size)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void updateName(String newName) {
+    venue_name = newName;
+    String sql = "UPDATE venues SET venue_name=:venue_name WHERE id=:id";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("venue_name", venue_name)
+        .addParameter("id", id)
+        .executeUpdate();
     }
   }
 
