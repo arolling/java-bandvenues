@@ -63,4 +63,17 @@ public class AppTest extends FluentTest {
     submit("#categorize");
     assertThat(pageSource()).contains("capacity 18200");
   }
+
+  @Test
+  public void editBandNameAndFanbase() {
+    Band old = new Band("The Beeeetles");
+    old.save();
+    goTo("http://localhost:4567/bands/" + old.getId());
+    fill("#editName").with("The Beatles");
+    submit("#edit");
+    fill("#editFans").with("10000000");
+    submit("#edit");
+    assertThat(pageSource()).contains("The Beatles");
+    assertThat(pageSource()).contains("10000000");
+  }
 }

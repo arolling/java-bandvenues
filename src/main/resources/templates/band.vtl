@@ -16,10 +16,10 @@
           </label>
         </div>
       #end
-      <button type="submit" id="addGigs">Add All</button>
+      <button type="submit" id="addGigs" class="btn btn-default">Add All</button>
     </form>
     <hr>
-
+    <h3>Add Genres</h3>
     <form action="/bands/$band.getId()/addCategories" method="post">
       #foreach($genre in $allGenres)
         <div class="checkbox">
@@ -29,16 +29,32 @@
           </label>
         </div>
       #end
-      <button type="submit" id="categorize">Add All</button>
+      <button type="submit" id="categorize" class="btn btn-default">Add All</button>
     </form>
   </div>
 
-  <div class="col-md-offset-4 col-md-4">
-    <h1>All Venues Played</h1>
+  <div class="col-md-4">
+    <h2>All Venues Played</h2>
     <div class="list-group">
       #foreach($venue in $band.allVenues())
         <a href="/venues/$venue.getId()" class="list-group-item">$venue.getName() <small>capacity $venue.getSize()</small></a>
       #end
     </div>
+  </div>
+
+  <div class="col-md-4">
+    <h3>Edit Band</h3>
+    <form action="/bands/$band.getId()/edit" method="post">
+      <div class="form-group">
+        <label for="editName">Change Name</label>
+        <input type="text" name="editName" id="editName" value="$band.getName()" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="editFans">Update Fanbase (currently $band.getFanbase())</label>
+        <input type="text" name="editFans" id="editFans" value="$band.getFanbase()" class="form-control">
+      </div>
+      <button type="submit" id="edit" class="btn btn-default">Make Changes</button>
+    </form>
+
   </div>
 </div>

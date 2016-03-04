@@ -67,5 +67,15 @@ public class App {
       return null;
     });
 
+    post("/bands/:id/edit", (request, response) -> {
+      Band thisBand = Band.find(Integer.parseInt(request.params("id")));
+      String newName = request.queryParams("editName");
+      int newFans = Integer.parseInt(request.queryParams("editFans"));
+      thisBand.updateFans(newFans);
+      thisBand.updateName(newName);
+      response.redirect("/bands/" + thisBand.getId());
+      return null;
+    });
+
   }
 }
