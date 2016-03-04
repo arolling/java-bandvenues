@@ -1,0 +1,47 @@
+.footer {
+  font-size: 170%;
+  text-align: right;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 100px;
+  min-height: 100%;
+}
+
+.jumbotron {
+  text-align: center;
+
+}
+
+.text-muted {
+  color: #CCC8C8;
+}
+
+.footerlink {
+  margin-left: 20px;
+  color: #12BA79;
+}
+
+.footerlink:hover {
+  color: #84C413;
+}
+
+.form-control {
+  width: 80%;
+}
+
+dd {
+  padding-bottom: 7px;
+}
+dt {
+  padding-top: 15px;
+}
