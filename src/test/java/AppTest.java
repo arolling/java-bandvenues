@@ -44,4 +44,23 @@ public class AppTest extends FluentTest {
     assertThat(pageSource()).contains("The Beatles");
     assertThat(pageSource()).contains("capacity 80000");
   }
+
+  @Test
+  public void addVenueAndGenreToBand() {
+    Band old = new Band("The Beatles");
+    old.save();
+    old.updateFans(100000000);
+    Venue carnegie = new Venue("Carnegie Hall", 2804);
+    carnegie.save();
+    Venue msg = new Venue("Madison Square Gardens", 18200);
+    msg.save();
+    goTo("http://localhost:4567/bands/" + old.getId());
+    click("#venue" + msg.getId());
+    click("#venue" + carnegie.getId());
+    submit("#addGigs");
+    click("#genre5");
+    click("#genre7");
+    submit("#categorize");
+    assertThat(pageSource()).contains("Pop, Rock & Roll");
+  }
 }
