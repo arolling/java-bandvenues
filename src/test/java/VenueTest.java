@@ -82,4 +82,20 @@ public class VenueTest {
     assertTrue(carnegie.equals(savedVenue));
   }
 
+  @Test
+  public void allBands_retrievesListOfAllBandsBookedAtVenue_true() {
+    Band neo = new Band("Neo");
+    neo.save();
+    Band old = new Band("The Beatles");
+    old.save();
+    old.updateFans(100000000);
+    Venue carnegie = new Venue("Carnegie Hall", 2804);
+    carnegie.save();
+    Venue msg = new Venue("Madison Square Gardens", 18200);
+    msg.save();
+    old.addVenue(msg);
+    assertTrue(msg.allBands().contains(old));
+    assertEquals(1, msg.allBands().size());
+  }
+
 }
