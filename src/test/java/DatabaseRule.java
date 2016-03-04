@@ -12,7 +12,7 @@ public class DatabaseRule extends ExternalResource {
       String deleteBandsQuery = "DELETE FROM bands *;";
       String deleteVenuesQuery = "DELETE FROM venues *;";
       String deleteBandsVenuesQuery = "DELETE FROM bands_venues *;";
-      String deleteGenresQuery = "DELETE FROM genres *;";
+      String deleteGenresQuery = "DELETE FROM genres WHERE id > 14;";
       String deleteBandsGenresQuery = "DELETE FROM bands_genres *;";
       con.createQuery(deleteBandsQuery).executeUpdate();
       con.createQuery(deleteVenuesQuery).executeUpdate();
