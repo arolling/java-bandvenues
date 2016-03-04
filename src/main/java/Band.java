@@ -11,16 +11,17 @@ public class Band {
     fanbase = 0;
   }
 
-  // @Override
-  // public boolean equals(Object otherBook){
-  //   if (!(otherBook instanceof Book)) {
-  //     return false;
-  //   } else {
-  //     Book newBook = (Book) otherBook;
-  //     return this.getTitle().equals(newBook.getTitle()) &&
-  //            this.getId() == newBook.getId() && this.getCopies() == newBook.getCopies();
-  //   }
-  // }
+  @Override
+  public boolean equals(Object otherBand){
+    if (!(otherBand instanceof Band)) {
+      return false;
+    } else {
+      Band newBand = (Band) otherBand;
+      return this.getName().equals(newBand.getName()) &&
+             this.getId() == newBand.getId() &&
+             this.getFanbase() == newBand.getFanbase();
+    }
+  }
 
   //Getters
 
@@ -54,6 +55,15 @@ public class Band {
         .addParameter("fanbase", fanbase)
         .executeUpdate()
         .getKey();
+    }
+  }
+
+  public static Band find(int band_id) {
+    String sql = "SELECT * FROM bands WHERE id=:id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", band_id)
+        .executeAndFetchFirst(Band.class);
     }
   }
 
