@@ -10,6 +10,10 @@ public class VenueTest {
 
   // UNIT TESTING
 
+  @Test
+  public void all_returnsEmptyAtFirst() {
+    assertEquals(Venue.all().size(), 0);
+  }
 
 
 }
