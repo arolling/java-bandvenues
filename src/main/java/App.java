@@ -35,5 +35,37 @@ public class App {
       response.redirect("/");
       return null;
     });
+
+    get("/bands/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Band thisBand = Band.find(Integer.parseInt(request.params("id")));
+      model.put("band", thisBand);
+      model.put("allGenres", Genre.all());
+      model.put("allVenues", Venue.all());
+      model.put("template", "templates/band.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/bands/:id/addGigs", (request, response) -> {
+      Band thisBand = Band.find(Integer.parseInt(request.params("id")));
+      String[] newGigs = request.queryParamsValues("checkVenue");
+      for(String gigId : newGigs) {
+        Venue venue = Venue.find(Integer.parseInt(gigId));
+        thisBand.addVenue(venue);
+      }
+      response.redirect("/bands/" + thisBand.getId());
+      return null;
+    });
+
+    post("/bands/:id/addCategories", (request, response) -> {
+      Band thisBand = Band.find(Integer.parseInt(request.params("id")));
+      String[] newGenres = request.queryParamsValues("checkGenre");
+      for(String genreId : newGenres) {
+        thisBand.addGenre(Integer.parseInt(genreId));
+      }
+      response.redirect("/bands/" + thisBand.getId());
+      return null;
+    });
+
   }
 }

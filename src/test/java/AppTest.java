@@ -61,6 +61,6 @@ public class AppTest extends FluentTest {
     click("#genre5");
     click("#genre7");
     submit("#categorize");
-    assertThat(pageSource()).contains("Pop, Rock & Roll");
+    assertThat(pageSource()).contains("capacity 18200");
   }
 }

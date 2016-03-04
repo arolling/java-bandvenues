@@ -1,8 +1,44 @@
+<h1>$band.getName()</h1>
+
+#foreach($genre in $band.allGenres())
+  <h2 class="small">$genre.getName()</h2>
+#end
+
 <div class="row">
   <div class="col-md-4">
+    <h3>Add Venues Played</h3>
+    <form action="/bands/$band.getId()/addGigs" method="post">
+      #foreach($venue in $allVenues)
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="checkVenue" value="$venue.getId()" id="venue$venue.getId()">
+            $venue.getName()
+          </label>
+        </div>
+      #end
+      <button type="submit" id="addGigs">Add All</button>
+    </form>
+    <hr>
 
+    <form action="/bands/$band.getId()/addCategories" method="post">
+      #foreach($genre in $allGenres)
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="checkGenre" value="$genre.getId()" id="genre$genre.getId()">
+            $genre.getName()
+          </label>
+        </div>
+      #end
+      <button type="submit" id="categorize">Add All</button>
+    </form>
   </div>
-  <div class="col-md-8">
 
+  <div class="col-md-offset-4 col-md-4">
+    <h1>All Venues Played</h1>
+    <div class="list-group">
+      #foreach($venue in $band.allVenues())
+        <a href="/venues/$venue.getId()" class="list-group-item">$venue.getName() <small>capacity $venue.getSize()</small></a>
+      #end
+    </div>
   </div>
 </div>
