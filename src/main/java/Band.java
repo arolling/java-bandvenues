@@ -24,6 +24,18 @@ public class Band {
 
   //Getters
 
+  public String getName() {
+    return band_name;
+  }
+
+  public int getFanbase() {
+    return fanbase;
+  }
+
+  public int getId() {
+    return id;
+  }
+
 
   //Database interaction below
   public static List<Band> all() {
@@ -31,6 +43,17 @@ public class Band {
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
         .executeAndFetch(Band.class);
+    }
+  }
+
+  public void save() {
+    String sql = "INSERT INTO bands (band_name, fanbase) VALUES (:band_name, :fanbase)";
+    try(Connection con = DB.sql2o.open()) {
+      this.id = (int) con.createQuery(sql, true)
+        .addParameter("band_name", band_name)
+        .addParameter("fanbase", fanbase)
+        .executeUpdate()
+        .getKey();
     }
   }
 

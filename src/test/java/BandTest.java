@@ -15,5 +15,13 @@ public class BandTest {
     assertEquals(Band.all().size(), 0);
   }
 
+  @Test
+  public void save_savesBandToDBAndSetsID_true() {
+    Band neo = new Band("Neo");
+    neo.save();
+    assertTrue(Band.all().get(0) instanceof Band);
+    assertEquals(neo.getId(), Band.all().get(0).getId());
+  }
+
 
 }
