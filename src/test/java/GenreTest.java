@@ -67,4 +67,22 @@ public class GenreTest {
     assertTrue(Genre.find(1).allBands().contains(old));
     assertEquals(2, Genre.find(2).allBands().size());
   }
+
+  @Test public void genreFilter_retrievesBandsThatMatchAnyOfSeveralGenres() {
+    Band neo = new Band("Neo");
+    neo.save();
+    Band old = new Band("The Beatles");
+    old.save();
+    Band old2 = new Band("The Ladybugs");
+    old2.save();
+    old.updateFans(100000000);
+    old.addGenre(2);
+    old.addGenre(1);
+    old.addGenre(7);
+    old2.addGenre(7);
+    neo.addGenre(2);
+    String [] testids = {"1", "7"};
+    assertTrue(Genre.genreFilter(testids).contains(old2));
+    assertEquals(2, Genre.genreFilter(testids).size());
+  }
 }

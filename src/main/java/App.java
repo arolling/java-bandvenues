@@ -1,5 +1,5 @@
 import java.util.HashMap;
-
+import java.util.List;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 
@@ -20,9 +20,28 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/search", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      model.put("allGenres", Genre.all());
+      model.put("template", "templates/search.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/search", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String[] selected = request.queryParamsValues("checkGenre");
+      List<Band> found = Genre.genreFilter(selected);
+      model.put("filtered", found);
+      model.put("allGenres", Genre.all());
+      model.put("template", "templates/search.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+
     post("/addBand", (request, response) -> {
       String newBandName = request.queryParams("bandName");
-      if(newBandName.length() > 0) {
+      if(newBandName.trim().length() > 0) {
         Band newBand = new Band(newBandName);
         newBand.save();
       }
@@ -33,7 +52,7 @@ public class App {
     post("/addVenue", (request, response) -> {
       String newVenueName = request.queryParams("venueName");
       int capacity = Integer.parseInt(request.queryParams("capacity"));
-      if(newVenueName.length() > 0) {
+      if(newVenueName.trim().length() > 0) {
         Venue newVenue = new Venue(newVenueName, capacity);
         newVenue.save();
       }

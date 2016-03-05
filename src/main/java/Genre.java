@@ -76,4 +76,22 @@ public class Genre{
         .executeAndFetch(Band.class);
     }
   }
+
+  public static List<Band> genreFilter(String[] genreIds) {
+    String sql = "SELECT DISTINCT ON (bands.id) bands.* FROM genres JOIN bands_genres ON (bands_genres.genre_id = genres.id) JOIN bands ON (bands.id = bands_genres.band_id) WHERE genres.id =";
+    boolean firstPass = true;
+    for(String id : genreIds) {
+      if(firstPass) {
+        firstPass = false;
+        sql += id;
+      } else {
+        sql += " OR genres.id=" + id;
+      }
+    }
+    sql += " ORDER BY id, band_name";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .executeAndFetch(Band.class);
+    }
+  }
 }
